@@ -195,6 +195,10 @@
     <Compile Remove="libraries\System.Runtime.Intrinsics\*.cs" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' &lt; '8.0')">
+    <Compile Remove="libraries\System.Memory\IndexOfAnyValues.cs" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
     <!-- System.Drawing.Common only supported on Windows -->
     <Compile Remove="libraries\System.Drawing\*.cs" />
