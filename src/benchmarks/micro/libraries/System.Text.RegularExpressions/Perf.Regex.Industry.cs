@@ -55,11 +55,7 @@ namespace System.Text.RegularExpressions.Tests
         public string Pattern { get; set; }
 
         [Params(
-            RegexOptions.None,
             RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
             )]
         public RegexOptions Options { get; set; }
 
@@ -86,14 +82,8 @@ namespace System.Text.RegularExpressions.Tests
     public class Perf_Regex_Industry_SliceSlice
     {
         [Params(
-            RegexOptions.None,
-            RegexOptions.IgnoreCase,
             RegexOptions.Compiled,
             RegexOptions.Compiled | RegexOptions.IgnoreCase
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-            , RegexOptions.NonBacktracking | RegexOptions.IgnoreCase
-#endif
             )]
         public RegexOptions Options { get; set; }
 
@@ -170,11 +160,7 @@ namespace System.Text.RegularExpressions.Tests
         public string Pattern { get; set; }
 
         [Params(
-            RegexOptions.None,
             RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
             )]
         public RegexOptions Options { get; set; }
 
@@ -218,11 +204,7 @@ namespace System.Text.RegularExpressions.Tests
         public string Pattern { get; set; }
 
         [Params(
-            RegexOptions.None,
             RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
             )]
         public RegexOptions Options { get; set; }
 
@@ -249,11 +231,7 @@ namespace System.Text.RegularExpressions.Tests
         public int Id { get; set; }
 
         [Params(
-            RegexOptions.None,
             RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
             )]
         public RegexOptions Options { get; set; }
 
