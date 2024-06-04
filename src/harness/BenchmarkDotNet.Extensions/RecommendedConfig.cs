@@ -30,12 +30,7 @@ namespace BenchmarkDotNet.Extensions
         {
             if (job is null)
             {
-                job = Job.Default
-                    .WithWarmupCount(1) // 1 warmup is enough for our purpose
-                    .WithIterationTime(TimeInterval.FromMilliseconds(250)) // the default is 0.5s per iteration, which is slighlty too much for us
-                    .WithMinIterationCount(15)
-                    .WithMaxIterationCount(20) // we don't want to run more that 20 iterations
-                    .DontEnforcePowerPlan(); // make sure BDN does not try to enforce High Performance power plan on Windows
+                job = Job.Default;
             }
 
             var config = ManualConfig.CreateEmpty()

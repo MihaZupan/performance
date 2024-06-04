@@ -79,13 +79,15 @@ namespace ResultsComparer
 
         private static void PrintTable((string id, Benchmark baseResult, Benchmark diffResult, EquivalenceTestConclusion conclusion)[] notSame, EquivalenceTestConclusion conclusion, TwoInputsOptions args)
         {
+            const int Limit = 160;
+
             var data = notSame
                 .Where(result => result.conclusion == conclusion)
                 .OrderByDescending(result => GetRatio(conclusion, result.baseResult, result.diffResult))
                 .Take(args.TopCount ?? int.MaxValue)
                 .Select(result => new
                 {
-                    Id = (result.id.Length <= 80 || args.FullId) ? result.id : result.id.Substring(0, 80),
+                    Id = (result.id.Length <= Limit || args.FullId) ? result.id : result.id.Substring(0, Limit),
                     DisplayValue = GetRatio(conclusion, result.baseResult, result.diffResult),
                     BaseMedian = result.baseResult.Statistics.Median,
                     DiffMedian = result.diffResult.Statistics.Median,
