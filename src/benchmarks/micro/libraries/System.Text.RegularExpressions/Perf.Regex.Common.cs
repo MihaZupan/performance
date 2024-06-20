@@ -17,7 +17,7 @@ namespace System.Text.RegularExpressions.Tests
         private Regex _searchWord, _searchWords, _searchSet, _searchBoundary, _notOneLoopNodeBacktracking, _oneNodeBacktracking;
         private string _loremIpsum;
 
-        [Params(RegexOptions.None, RegexOptions.Compiled, RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+        [Params(RegexOptions.Compiled, RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public RegexOptions Options { get; set; }
 
         [GlobalSetup]

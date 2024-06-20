@@ -54,14 +54,7 @@ namespace System.Text.RegularExpressions.Tests
         )]
         public string Pattern { get; set; }
 
-        [Params(
-            RegexOptions.None,
-            RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
-            )]
-        public RegexOptions Options { get; set; }
+        public RegexOptions Options { get; set; } = RegexOptions.Compiled;
 
         private Regex _regex;
         private string _input;
@@ -87,14 +80,8 @@ namespace System.Text.RegularExpressions.Tests
     public class Perf_Regex_Industry_SliceSlice
     {
         [Params(
-            RegexOptions.None,
-            RegexOptions.IgnoreCase,
             RegexOptions.Compiled,
             RegexOptions.Compiled | RegexOptions.IgnoreCase
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-            , RegexOptions.NonBacktracking | RegexOptions.IgnoreCase
-#endif
             )]
         public RegexOptions Options { get; set; }
 
@@ -171,14 +158,7 @@ namespace System.Text.RegularExpressions.Tests
         )]
         public string Pattern { get; set; }
 
-        [Params(
-            RegexOptions.None,
-            RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
-            )]
-        public RegexOptions Options { get; set; }
+        public RegexOptions Options { get; set; } = RegexOptions.Compiled;
 
         private string _sherlock;
         private Regex _regex;
@@ -220,14 +200,7 @@ namespace System.Text.RegularExpressions.Tests
             "\\p{Sm}")]
         public string Pattern { get; set; }
 
-        [Params(
-            RegexOptions.None,
-            RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
-            )]
-        public RegexOptions Options { get; set; }
+        public RegexOptions Options { get; set; } = RegexOptions.Compiled;
 
         private string _3200;
         private Regex _regex;
@@ -252,14 +225,7 @@ namespace System.Text.RegularExpressions.Tests
         [Params(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)]
         public int Id { get; set; }
 
-        [Params(
-            RegexOptions.None,
-            RegexOptions.Compiled
-#if NET7_0_OR_GREATER
-            , RegexOptions.NonBacktracking
-#endif
-            )]
-        public RegexOptions Options { get; set; }
+        public RegexOptions Options { get; set; } = RegexOptions.Compiled;
 
         private string _input;
         private Regex _regex;
