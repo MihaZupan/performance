@@ -97,7 +97,7 @@ namespace System.Text.RegularExpressions.Tests
         }
 
         [Benchmark]
-        [MinIterationCount(3)] // each iteration takes several seconds
+        //[MinIterationCount(10)] // each iteration takes several seconds
         //[MemoryRandomization] Currently causing OOMs in CI https://github.com/dotnet/performance/issues/4025
         public int Count()
         {
@@ -116,45 +116,45 @@ namespace System.Text.RegularExpressions.Tests
     public class Perf_Regex_Industry_RustLang_Sherlock
     {
         [Params(
-            @"Sherlock",
-            @"Holmes",
-            @"Sherlock Holmes",
+            //@"Sherlock",
+            //@"Holmes",
+            //@"Sherlock Holmes",
             @"(?i)Sherlock",
-            @"(?i)Holmes",
+            //@"(?i)Holmes",
             @"(?i)Sherlock Holmes",
-            @"Sherlock\s+Holmes",
-            @"Sherlock|Street",
-            @"Sherlock|Holmes",
-            @"Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
-            @"(?i)Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
-            @"Sher[a-z]+|Hol[a-z]+",
-            @"(?i)Sher[a-z]+|Hol[a-z]+",
-            @"Sherlock|Holmes|Watson",
-            @"(?i)Sherlock|Holmes|Watson",
-            @"zqj",
-            @"aqj",
-            @"aei",
-            @"the",
-            @"The",
-            @"(?i)the",
-            @"the\s+\w+",
-            @".*",
-            @"[^\n]*",
-            @"(?s).*",
-            @"\p{L}",
-            @"\p{Lu}",
-            @"\p{Ll}",
-            @"\w+",
-            @"\w+\s+Holmes",
-            @"\w+\s+Holmes\s+\w+",
-            @"Holmes.{0,25}Watson|Watson.{0,25}Holmes",
-            //@"Holmes(?:\s*.+\s*){0,10}Watson|Watson(?:\s*.+\s*){0,10}Holmes", // Too slow with backtracking engine
-            //@"[""'][^""']{0,30}[?!.][""']", // Breaks benchmarkdotnet 13.1
-            @"(?m)^Sherlock Holmes|Sherlock Holmes$",
-            @"\b\w+n\b",
-            @"[a-q][^u-z]{13}x",
-            @"[a-zA-Z]+ing",
-            @"\s[a-zA-Z]{0,12}ing\s"
+            //@"Sherlock\s+Holmes",
+            //@"Sherlock|Street",
+            //@"Sherlock|Holmes",
+            //@"Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
+            //@"(?i)Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
+            //@"Sher[a-z]+|Hol[a-z]+",
+            //@"(?i)Sher[a-z]+|Hol[a-z]+",
+            //@"Sherlock|Holmes|Watson",
+            //@"(?i)Sherlock|Holmes|Watson",
+            //@"zqj",
+            @"aqj"
+            //@"aei",
+            //@"the",
+            //@"The",
+            //@"(?i)the",
+            //@"the\s+\w+",
+            //@".*",
+            //@"[^\n]*",
+            //@"(?s).*",
+            //@"\p{L}",
+            //@"\p{Lu}",
+            //@"\p{Ll}",
+            //@"\w+",
+            //@"\w+\s+Holmes",
+            //@"\w+\s+Holmes\s+\w+",
+            //@"Holmes.{0,25}Watson|Watson.{0,25}Holmes",
+            ////@"Holmes(?:\s*.+\s*){0,10}Watson|Watson(?:\s*.+\s*){0,10}Holmes", // Too slow with backtracking engine
+            ////@"[""'][^""']{0,30}[?!.][""']", // Breaks benchmarkdotnet 13.1
+            //@"(?m)^Sherlock Holmes|Sherlock Holmes$",
+            //@"\b\w+n\b",
+            //@"[a-q][^u-z]{13}x",
+            //@"[a-zA-Z]+ing",
+            //@"\s[a-zA-Z]{0,12}ing\s"
         )]
         public string Pattern { get; set; }
 
