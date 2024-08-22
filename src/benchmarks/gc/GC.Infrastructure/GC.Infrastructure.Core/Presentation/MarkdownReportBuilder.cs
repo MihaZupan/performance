@@ -29,8 +29,8 @@ namespace GC.Infrastructure.Core.Presentation
 
             // Iterate till we find the section.
             int runnerIdx = -1;
-            for (int startIdx = 0; startIdx < lines.Length; startIdx++) 
-            { 
+            for (int startIdx = 0; startIdx < lines.Length; startIdx++)
+            {
                 string line = lines[startIdx];
                 if (line.StartsWith($"# {sectionToCopy}"))
                 {
@@ -47,7 +47,7 @@ namespace GC.Infrastructure.Core.Presentation
 
             // Once the section is obtained, iterate till we get to the next section.
             StringBuilder sb = new();
-            while (runnerIdx < lines.Length) 
+            while (runnerIdx < lines.Length)
             {
                 string line = lines[runnerIdx];
 
@@ -81,6 +81,24 @@ namespace GC.Infrastructure.Core.Presentation
             }
         }
 
+        public static void AddIncompleteTestsSectionWithYamlFileName(this StreamWriter sw, string yamlFileName, Dictionary<string, ProcessExecutionDetails> executionDetails)
+        {
+            sw.WriteLine($"# Incomplete Tests: {yamlFileName}.yaml");
+
+            foreach (var p in executionDetails)
+            {
+                if (p.Value.HasFailed)
+                {
+                    sw.WriteLine($"### {p.Key}");
+                    sw.WriteLine($"Standard Error: {p.Value.StandardError}\n");
+                    sw.WriteLine();
+                    sw.WriteLine($"Standard Out: {p.Value.StandardOut}\n");
+                    sw.WriteLine();
+                    sw.WriteLine($"Repro: \n ```{p.Value.CommandlineArgs}```\n");
+                }
+            }
+        }
+
         public static void AddReproSection(this StreamWriter sw, Dictionary<string, ProcessExecutionDetails> executionDetails)
         {
             sw.WriteLine("## Repro Steps");
@@ -96,7 +114,7 @@ namespace GC.Infrastructure.Core.Presentation
 
         public static void GenerateChecklist(this StreamWriter sw, string[] gcperfsimConfigurations, string[] microbenchmarkConfigurations, HashSet<string> aspnetRuns)
         {
-            var cleanedGCPerfSimConfigurations      = new HashSet<string>(gcperfsimConfigurations.Select(c => Path.GetFileNameWithoutExtension(c)));
+            var cleanedGCPerfSimConfigurations = new HashSet<string>(gcperfsimConfigurations.Select(c => Path.GetFileNameWithoutExtension(c)));
             var cleanedMicrobenchmarkConfigurations = new HashSet<string>(microbenchmarkConfigurations.Select(c => Path.GetFileNameWithoutExtension(c)));
 
             // GCPerfSim.
@@ -108,11 +126,11 @@ namespace GC.Infrastructure.Core.Presentation
             string containsLowMemoryContainer_GCPerfSim = cleanedGCPerfSimConfigurations.Contains("LowMemoryContainer") ? "x" : " ";
 
             // Microbenchmarks.
-            string containsServer_Microbenchmarks      = cleanedMicrobenchmarkConfigurations.Contains("Microbenchmrks_Server") ? "x" : " ";
+            string containsServer_Microbenchmarks = cleanedMicrobenchmarkConfigurations.Contains("Microbenchmrks_Server") ? "x" : " ";
             string containsWorkstation_Microbenchmarks = cleanedGCPerfSimConfigurations.Contains("Microbenchmarks_Workstation") ? "x" : " ";
 
             // ASPNet Configurations.
-            string contains_JsonMinWindows      = aspnetRuns.Contains("JsonMin_Windows") ? "x" : " ";
+            string contains_JsonMinWindows = aspnetRuns.Contains("JsonMin_Windows") ? "x" : " ";
             string contains_FortunesEtf_Windows = aspnetRuns.Contains("FortunesETF_Windows") ? "x" : " ";
             string contains_Stage1Grpc_Windows = aspnetRuns.Contains("Stage1Grpc_Windows") ? "x" : " ";
 

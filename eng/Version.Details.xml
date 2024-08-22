@@ -1,31 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="9.0.0-preview.2.24074.3">
+    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="9.0.0-rc.2.24420.15">
       <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>96dd3d1b7feb0843ffe12858afb04d1c281150e7</Sha>
+      <Sha>6b5d89152d7f4f71c87009dc8ee99c1f7cba8b5e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink" Version="9.0.0-preview.2.24074.3">
+    <Dependency Name="Microsoft.NET.ILLink" Version="9.0.0-rc.2.24420.15">
       <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>96dd3d1b7feb0843ffe12858afb04d1c281150e7</Sha>
+      <Sha>6b5d89152d7f4f71c87009dc8ee99c1f7cba8b5e</Sha>
     </Dependency>
-    <Dependency Name="System.Threading.Channels" Version="9.0.0-preview.2.24074.3">
+    <Dependency Name="System.Threading.Channels" Version="9.0.0-rc.2.24420.15">
       <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>96dd3d1b7feb0843ffe12858afb04d1c281150e7</Sha>
+      <Sha>6b5d89152d7f4f71c87009dc8ee99c1f7cba8b5e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.Extensions.Logging" Version="9.0.0-preview.2.24074.3">
+    <Dependency Name="Microsoft.Extensions.Logging" Version="9.0.0-rc.2.24420.15">
       <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>96dd3d1b7feb0843ffe12858afb04d1c281150e7</Sha>
+      <Sha>6b5d89152d7f4f71c87009dc8ee99c1f7cba8b5e</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24074.1">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24420.6">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>ac3bef13c5ab17858f69c12d015057a992f8da8a</Sha>
+      <Sha>b435d26f349d3960d12281321972ed323c35319d</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.24074.1">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.24420.6">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>ac3bef13c5ab17858f69c12d015057a992f8da8a</Sha>
+      <Sha>b435d26f349d3960d12281321972ed323c35319d</Sha>
+    </Dependency>
+    <!--
+      Maui Rollback Version mappings, default means generated from sdk version. Allows for manual override of version similar to https://github.com/dotnet/maui/blob/df8cfcf635a590955a8cc3d6cf7ae6280449dd3f/eng/Versions.props#L138-L146, where the logic comes from:
+      Mapping_Microsoft.Maui.Controls:default
+      Mapping_Microsoft.NETCore.App.Ref:default
+      Mapping_Microsoft.NET.Workload.Emscripten.Current:default
+      Mapping_Microsoft.Android.Sdk:default
+      Mapping_Microsoft.MacCatalyst.Sdk:default
+      Mapping_Microsoft.macOS.Sdk:default
+      Mapping_Microsoft.iOS.Sdk:default
+      Mapping_Microsoft.tvOS.Sdk:default
+    -->
+    <!-- Dependencies for .NET MAUI workload -->
+    <Dependency Name="Microsoft.Maui.Controls" Version="9.0.0-rc.1.24420.5">
+      <Sha>0cd0c8637e523d96a4dff4ba328b881d94ca81ab</Sha>
+      <Uri>https://github.com/dotnet/maui</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.NET.Sdk" Version="9.0.100-rc.1.24409.1" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>43360291a50c9c7c471551f8f8363919d38014ea</Sha>
+      <Uri>https://github.com/dotnet/sdk</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.NETCore.App.Ref" Version="9.0.0-rc.1.24408.12" CoherentParentDependency="Microsoft.NET.Sdk">
+      <Sha>68511fd27fe4055ce5203742998ba12019dfcbd4</Sha>
+      <Uri>https://github.com/dotnet/runtime</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.NET.Workload.Emscripten.Current.Manifest-9.0.100.Transport" Version="9.0.0-rc.1.24402.2" CoherentParentDependency="Microsoft.NETCore.App.Ref">
+      <Sha>edf3e90fa25b1fc4f7f63ceb45ef70f49c6b121a</Sha>
+      <Uri>https://github.com/dotnet/emsdk</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.Android.Sdk.Windows" Version="35.0.0-rc.1.49" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>d050fda83a61bb7cd31e0a0686e9047cb01f924d</Sha>
+      <Uri>https://github.com/dotnet/android</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_17.5" Version="17.5.9260-net9-rc1" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>5b516f0122f424cf9bb62e5d2e7730339ea78aee</Sha>
+      <Uri>https://github.com/xamarin/xamarin-macios</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_14.5" Version="14.5.9260-net9-rc1" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>5b516f0122f424cf9bb62e5d2e7730339ea78aee</Sha>
+      <Uri>https://github.com/xamarin/xamarin-macios</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_17.5" Version="17.5.9260-net9-rc1" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>5b516f0122f424cf9bb62e5d2e7730339ea78aee</Sha>
+      <Uri>https://github.com/xamarin/xamarin-macios</Uri>
+    </Dependency>
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_17.5" Version="17.5.9260-net9-rc1" CoherentParentDependency="Microsoft.Maui.Controls">
+      <Sha>5b516f0122f424cf9bb62e5d2e7730339ea78aee</Sha>
+      <Uri>https://github.com/xamarin/xamarin-macios</Uri>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>

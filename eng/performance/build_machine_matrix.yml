@@ -18,9 +18,9 @@ jobs:
         machinePool: Open
         queue: Windows.10.Amd64.Client.Open
       ${{ else }}:
-        osVersion: 19H1
+        osVersion: Win11
         machinePool: Tiger
-        queue: Windows.10.Amd64.19H1.Tiger.Perf
+        queue: Windows.11.Amd64.Tiger.Perf
 
 - ${{ if and(containsValue(parameters.buildMachines, 'win-rs5-x64'), eq(parameters.isPublic, true)) }}: # RS5 only used in public builds currently
   - template: ${{ parameters.jobTemplate }}
@@ -47,9 +47,9 @@ jobs:
         machinePool: Open
         queue: Windows.10.Amd64.Client.Open
       ${{ else }}:
-        osVersion: 19H1
+        osVersion: Win11
         machinePool: Tiger
-        queue: Windows.10.Amd64.19H1.Tiger.Perf
+        queue: Windows.11.Amd64.Tiger.Perf
 
 - ${{ if containsValue(parameters.buildMachines, 'ubuntu-x64') }}:
   - template: ${{ parameters.jobTemplate }}
@@ -68,24 +68,6 @@ jobs:
         machinePool: Tiger
         queue: Ubuntu.2204.Amd64.Tiger.Perf # using a dedicated private Helix queue (perftigers)
 
-# While we wait for lttng updates on Ubuntu 22.04 we are going to use 18.04
-- ${{ if containsValue(parameters.buildMachines, 'ubuntu-x64-1804') }}:
-  - template: ${{ parameters.jobTemplate }}
-    parameters:
-      osName: ubuntu
-      osVersion: 1804
-      architecture: x64
-      pool: 
-        vmImage: ubuntu-latest
-      container: ubuntu_x64_build_container
-      ${{ insert }}: ${{ parameters.jobParameters }}
-      ${{ if eq(parameters.isPublic, true) }}:
-        machinePool: Open
-        queue: Ubuntu.1804.Amd64.Open
-      ${{ else }}:
-        machinePool: Tiger
-        queue: Ubuntu.1804.Amd64.Tiger.Perf # using a dedicated private Helix queue (perftigers)
-
 - ${{ if and(containsValue(parameters.buildMachines, 'win-arm64'), not(eq(parameters.isPublic, true))) }}: # Windows ARM64 only used in private builds currently
   - template: ${{ parameters.jobTemplate }}
     parameters:
@@ -95,7 +77,7 @@ jobs:
       pool:
         vmImage: windows-2019
       machinePool: Tiger
-      queue: Windows.10.Arm64.Perf.Surf
+      queue: Windows.11.Arm64.Surf.Perf
       ${{ insert }}: ${{ parameters.jobParameters }}
 
 - ${{ if and(containsValue(parameters.buildMachines, 'win-arm64-ampere'), not(eq(parameters.isPublic, true))) }}: # Windows ARM64 only used in private builds currently
@@ -114,12 +96,13 @@ jobs:
   - template: ${{ parameters.jobTemplate }}
     parameters:
       osName: ubuntu
-      osVersion: 2004
+      osVersion: 2204
       architecture: arm64
       pool:
-        vmImage: ubuntu-20.04
+        vmImage: ubuntu-latest
+      container: ubuntu_x64_build_container
       machinePool: Ampere
-      queue: Ubuntu.2004.Arm64.Perf
+      queue: Ubuntu.2204.Arm64.Perf
       ${{ insert }}: ${{ parameters.jobParameters }}
 
 - ${{ if and(containsValue(parameters.buildMachines, 'win-x64-android-arm64-pixel'), not(eq(parameters.isPublic, true))) }}: # Windows ARM64 Pixel only used in private builds currently
@@ -151,9 +134,9 @@ jobs:
     parameters:
       osName: osx
       architecture: x64
-      osVersion: 13
+      osVersion: 14
       pool:
-        vmImage: 'macos-13'
+        vmImage: 'macos-14'
       queue: OSX.13.Amd64.Iphone.Perf
       machinePool: iPhoneMini12
       ${{ insert }}: ${{ parameters.jobParameters }}

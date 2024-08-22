@@ -245,16 +245,20 @@ ex: C:\repos\performance;C:\repos\runtime
         Runs the specified scenario
         '''
         self.parseargs()
+
+        python_command = pythoncommand().split(' ')
+        python_exe = python_command[0]
+        python_args = " ".join(python_command[1:])
         if self.testtype == const.INNERLOOP:
             startup = StartupWrapper()
             self.traits.add_traits(scenarioname=self.scenarioname,
             scenariotypename=const.SCENARIO_NAMES[const.INNERLOOP],
             apptorun='dotnet', appargs='run --project %s' % appfolder(self.traits.exename, self.traits.projext),
-            innerloopcommand=pythoncommand(),
-            iterationsetup=pythoncommand(),
-            setupargs='%s %s setup_build' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
-            iterationcleanup=pythoncommand(),
-            cleanupargs='%s %s cleanup' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
+            innerloopcommand=python_exe,
+            iterationsetup=python_exe,
+            setupargs='%s %s setup_build' % (python_args, const.ITERATION_SETUP_FILE),
+            iterationcleanup=python_exe,
+            cleanupargs='%s %s cleanup' % (python_args, const.ITERATION_SETUP_FILE),
             affinity=self.affinity)
             startup.runtests(self.traits)
 
@@ -263,11 +267,11 @@ ex: C:\repos\performance;C:\repos\runtime
             self.traits.add_traits(scenarioname=self.scenarioname,
             scenariotypename=const.SCENARIO_NAMES[const.INNERLOOPMSBUILD],
             apptorun='dotnet', appargs='run --project %s' % appfolder(self.traits.exename, self.traits.projext),
-            innerloopcommand=pythoncommand(),
-            iterationsetup=pythoncommand(),
-            setupargs='%s %s setup_build' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
-            iterationcleanup=pythoncommand(),
-            cleanupargs='%s %s cleanup' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
+            innerloopcommand=python_exe,
+            iterationsetup=python_exe,
+            setupargs='%s %s setup_build' % (python_args, const.ITERATION_SETUP_FILE),
+            iterationcleanup=python_exe,
+            cleanupargs='%s %s cleanup' % (python_args, const.ITERATION_SETUP_FILE),
             affinity=self.affinity)
             startup.runtests(self.traits)
             
@@ -276,11 +280,11 @@ ex: C:\repos\performance;C:\repos\runtime
             self.traits.add_traits(scenarioname=self.scenarioname,
             scenariotypename=const.SCENARIO_NAMES[const.DOTNETWATCH],
             apptorun='dotnet', appargs='watch -v',
-            innerloopcommand=pythoncommand(),
-            iterationsetup=pythoncommand(),
-            setupargs='%s %s setup_build' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
-            iterationcleanup=pythoncommand(),
-            cleanupargs='%s %s cleanup' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
+            innerloopcommand=python_exe,
+            iterationsetup=python_exe,
+            setupargs='%s %s setup_build' % (python_args, const.ITERATION_SETUP_FILE),
+            iterationcleanup=python_exe,
+            cleanupargs='%s %s cleanup' % (python_args, const.ITERATION_SETUP_FILE),
             affinity=self.affinity)
             self.traits.add_traits(workingdir = const.APPDIR)
             startup.runtests(self.traits)
@@ -312,10 +316,10 @@ ex: C:\repos\performance;C:\repos\runtime
                     scenariotypename='%s_%s' % (const.SCENARIO_NAMES[const.SDK], const.CLEAN_BUILD),
                     apptorun=const.DOTNET,
                     appargs='build',
-                    iterationsetup=pythoncommand(),
-                    setupargs='%s %s setup_build' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
-                    iterationcleanup=pythoncommand(),
-                    cleanupargs='%s %s cleanup' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
+                    iterationsetup=python_exe,
+                    setupargs='%s %s setup_build' % (python_args, const.ITERATION_SETUP_FILE),
+                    iterationcleanup=python_exe,
+                    cleanupargs='%s %s cleanup' % (python_args, const.ITERATION_SETUP_FILE),
                     workingdir=const.APPDIR,
                     environmentvariables=envlistcleanbuild,
                 )
@@ -344,10 +348,10 @@ ex: C:\repos\performance;C:\repos\runtime
                     apptorun=const.DOTNET,
                     scenarioname=self.scenarioname,
                     scenariotypename='%s_%s' % (const.SCENARIO_NAMES[const.SDK], const.NEW_CONSOLE),
-                    iterationsetup=pythoncommand(),
-                    setupargs='%s %s setup_new' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
-                    iterationcleanup=pythoncommand(),
-                    cleanupargs='%s %s cleanup' % ('-3' if iswin() else '', const.ITERATION_SETUP_FILE),
+                    iterationsetup=python_exe,
+                    setupargs='%s %s setup_new' % (python_args, const.ITERATION_SETUP_FILE),
+                    iterationcleanup=python_exe,
+                    cleanupargs='%s %s cleanup' % (python_args, const.ITERATION_SETUP_FILE),
                     workingdir=const.APPDIR
                 )
                 self.traits.add_traits(overwrite=True, startupmetric=const.STARTUP_PROCESSTIME)
@@ -637,7 +641,7 @@ ex: C:\repos\performance;C:\repos\runtime
             getLogger().info("Completed install.")
 
             allResults = []
-            timeToFirstDrawEventEndDateTime = datetime.now() # This is used to keep track of the latest time to draw end event, we use this to calculate time to draw and also as a reference point for the next iteration log time.
+            timeToFirstDrawEventEndDateTime = datetime.now() + timedelta(minutes=-10) # This is used to keep track of the latest time to draw end event, we use this to calculate time to draw and also as a reference point for the next iteration log time.
             for i in range(self.startupiterations + 1): # adding one iteration to account for the warmup iteration
                 getLogger().info("Waiting 10 secs to ensure we're not getting confused with previous app run.")
                 time.sleep(10)
@@ -749,6 +753,16 @@ ex: C:\repos\performance;C:\repos\runtime
                     except:
                         break
 
+                
+                if i == 0: # Use the warmup iteration to get the current device time
+                    if len(events) > 0:
+                        timeToFirstDrawEventEndDateTime = datetime.strptime(events[-1]['timestamp'], '%Y-%m-%d %H:%M:%S.%f%z')
+                        getLogger().info("Time on device: %s", timeToFirstDrawEventEndDateTime)
+                        continue
+
+                    getLogger().error("No watchdog events found in the log, this could mean the app crashed or the device clock is not in sync with the host.")
+                    raise Exception("No watchdog events found in the log, this could mean the app crashed or the device clock is not in sync with the host.")
+
                 # the startup measurement relies on the date/time of the device to be pretty much in sync with the host
                 # since we use the timestamps from the host to decide which parts of the device log to get and
                 # we then use that to calculate the time delta from watchdog events
@@ -814,13 +828,8 @@ ex: C:\repos\performance;C:\repos\runtime
                     # startup time is time to first draw
                     totalTimeMilliseconds = timeToMainMilliseconds + timeToFirstDrawMilliseconds
 
-                if i == 0:
-                    # ignore the warmup iteration
-                    getLogger().info(f'Warmup iteration took {totalTimeMilliseconds}')
-                else:
-                    # TODO: this isn't really a COLD run, we should have separate measurements for starting the app right after install
-                    launchState = 'COLD'
-                    allResults.append(f'LaunchState: {launchState}\nTotalTime: {int(totalTimeMilliseconds)}\nTimeToMain: {int(timeToMainMilliseconds)}\n\n')
+                launchState = 'COLD'
+                allResults.append(f'LaunchState: {launchState}\nTotalTime: {int(totalTimeMilliseconds)}\nTimeToMain: {int(timeToMainMilliseconds)}\n\n')
 
             # Done with testing, uninstall the app
             getLogger().info("Uninstalling app")

@@ -3,9 +3,9 @@
     public sealed class ASPNetBenchmarksConfiguration : ConfigurationBase
     {
         public Dictionary<string, Run>? Runs { get; set; }
-        public Environment? Environment { get; set; }
-        public BenchmarkSettings? benchmark_settings { get; set; }
-        public Output? Output { get; set; }
+        public Environment Environment { get; set; }
+        public BenchmarkSettings benchmark_settings { get; set; }
+        public Output Output { get; set; }
     }
 
     public sealed class Run : RunBase
@@ -25,6 +25,7 @@
     {
         public string? benchmark_file { get; set; }
         public string additional_arguments { get; set; } = "";
+        public string? override_arguments { get; set; } = "";
         public List<string> benchmarkFilters { get; set; } = new();
     }
 
@@ -34,10 +35,7 @@
         public static ASPNetBenchmarksConfiguration Parse(string path)
         {
             // Preconditions.
-            if (string.IsNullOrEmpty(path) || !File.Exists(path))
-            {
-                throw new ArgumentNullException($"{nameof(ASPNetBenchmarksConfigurationParser)}: {nameof(path)} is null/empty or doesn't exist. You must specify a valid path.");
-            }
+            ConfigurationChecker.VerifyFile(path, nameof(ASPNetBenchmarksConfigurationParser));
 
             string serializedConfiguration = File.ReadAllText(path);
 
@@ -56,6 +54,35 @@
             if (configuration == null)
             {
                 throw new ArgumentNullException($"{nameof(ASPNetBenchmarksConfigurationParser)}: {nameof(configuration)} is null. Check the syntax of the configuration.");
+            }
+
+            // Checks if mandatory arguments are specified in the configuration.
+            if (configuration.Output == null)
+            {
+                throw new ArgumentNullException($"{nameof(ASPNetBenchmarksConfigurationParser)}: {nameof(configuration.Output)} is null. Check the syntax of the configuration.");
+            }
+
+            if (string.IsNullOrEmpty(configuration.Output.Path))
+            {
+                throw new ArgumentNullException($"{nameof(ASPNetBenchmarksConfigurationParser)}: {nameof(configuration.Output.Path)} is null or empty. Please specify an output path.");
+            }
+
+            if (configuration.Environment == null)
+            {
+                throw new ArgumentNullException($"{nameof(ASPNetBenchmarksConfigurationParser)}: {nameof(configuration.Environment)} is null. Please add the environment item in the configuration.");
+            }
+
+            // Check for any COMPlus_ environment variables.
+            if (configuration.Environment != null)
+            {
+                ConfigurationChecker.VerifyEnvironmentVariables(configuration.Environment.environment_variables, $"{nameof(ASPNetBenchmarksConfigurationParser)}");
+            }
+            if (configuration.Runs != null)
+            {
+                foreach (var run in configuration.Runs)
+                {
+                    ConfigurationChecker.VerifyEnvironmentVariables(run.Value.environment_variables, $"{nameof(ASPNetBenchmarksConfigurationParser)} for Run: {run.Key}");
+                }
             }
 
             return configuration;

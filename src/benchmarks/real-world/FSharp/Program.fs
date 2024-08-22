@@ -6,14 +6,11 @@ open System.Collections.Immutable
 
 open FSharp.Compiler.CodeAnalysis
 open FSharp.Compiler.Diagnostics
-open FSharp.Compiler.EditorServices
 open FSharp.Compiler.Text
-open FSharp.Compiler.Tokenization
 
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
 open BenchmarkDotNet.Extensions
-
 
 [<Literal>]
 let FSharpCategory = "fsharp"
@@ -57,7 +54,7 @@ let prepareProject projectDirName =
         
     projectDir, projectOptions, checker
     
-let parseAndTypeCheckProject (projectDir, projectOptions, checker: FSharpChecker)  =    
+let parseAndTypeCheckProject (projectDir, projectOptions: FSharpProjectOptions, checker: FSharpChecker)  =    
 
     let result = checker.ParseAndCheckProject(projectOptions) |> Async.RunSynchronously
     
@@ -67,95 +64,21 @@ let parseAndTypeCheckProject (projectDir, projectOptions, checker: FSharpChecker
         let errors = errors |> Seq.map (sprintf "%A") |> String.concat "\n" 
         failwith $"Type checking failed {errors}"
 
-let counter = (Seq.initInfinite id).GetEnumerator()
-
-let typeCheckFileInProject projectDir projectOptions (checker: FSharpChecker) filename =
-    let filename = projectDir ++ filename
-    
-    counter.MoveNext() |> ignore
-    let count = counter.Current
-    let contents = File.ReadAllText filename + $"\n// {count}" // avoid cache
-    
-    let _parseResult, checkResult = checker.ParseAndCheckFileInProject(filename, count, SourceText.ofString contents, projectOptions) |> Async.RunSynchronously
-           
-    match checkResult with
-    | FSharpCheckFileAnswer.Succeeded checkFileResults ->
-        match checkFileResults.Diagnostics |> Seq.where (fun d -> d.Severity = FSharpDiagnosticSeverity.Error) |> Seq.toList with
-        | [] -> checkFileResults
-        | errors ->
-            let errors = errors |> Seq.map (sprintf "%A") |> String.concat "\n" 
-            failwith $"Type checking failed {errors}"
-    | FSharpCheckFileAnswer.Aborted -> failwith "Type checking aborted"   
-
-
-[<BenchmarkCategory(FSharpCategory)>]
-type FsPlusBenchmarks () =
-    
-    let projectDir, projectOptions, checker = prepareProject "FSharpPlus" |> parseAndTypeCheckProject
-   
-    [<Benchmark>]
-    member this.TypeCheckControlMonoid () =
-        let filename = "Control" ++ "Monoid.fs"
-        typeCheckFileInProject projectDir projectOptions checker filename
-        
-    [<Benchmark>]
-    member this.TypeCheckDataFree () =
-        let filename = "Data" ++ "Free.fs"
-        typeCheckFileInProject projectDir projectOptions checker filename
-
 
 [<BenchmarkCategory(FSharpCategory)>]
 type FsToolkitBenchmarks () =
     
     let projectDir, projectOptions, checker = prepareProject "FsToolkit.ErrorHandling"
     
-    let sourceFiles = [for file in projectOptions.SourceFiles do
-                           file, SourceText.ofString (File.ReadAllText file)]
-   
-    let parseAllFiles =
-        let parsingOptions, _diagnostics = checker.GetParsingOptionsFromProjectOptions projectOptions
-        [for file, contents in sourceFiles do
-            checker.ParseFile(file, contents, parsingOptions, cache=false)]
-    
-    [<Benchmark>]
-    member this.ParseAndTypeCheckProject() =
+    // Disabled since the benchmark does too much and produces too many false positives and negatives 
+    // [<Benchmark>]
+    member _.ParseAndTypeCheckProject() =
         parseAndTypeCheckProject (projectDir, projectOptions, checker)
     
     [<IterationCleanup(Target = "ParseAndTypeCheckProject")>]
     member _.TypeCheckingCleanup() =
         checker.InvalidateAll()
         checker.ClearLanguageServiceRootCachesAndCollectAndFinalizeAllTransients()
-    
-    [<Benchmark>]
-    member _.ParseAllFilesInProjectSequential() =
-        parseAllFiles |> Async.Sequential |> Async.RunSynchronously
-
-    [<Benchmark>]
-    member _.ParseAllFilesInProjectParallel() =
-        parseAllFiles |> Async.Parallel |> Async.RunSynchronously
-        
-    // [<Benchmark>]
-    // How to avoid cache?
-    member _.GetTooltip() =
-        let file, contents = sourceFiles |> List.find (fun (file, _) -> file.EndsWith "AsyncResult.fs")
-        let _parseResults, typeCheckAnswer = checker.ParseAndCheckFileInProject(file, 0, contents, projectOptions) |> Async.RunSynchronously        
-        match typeCheckAnswer with
-        | FSharpCheckFileAnswer.Succeeded checkFileResults ->
-            let result = checkFileResults.GetToolTip(173, 47, "        values |> Async.map (Result.requireHead error)", ["Result"; "requireHead"], FSharpTokenTag.Identifier)
-            // printfn $"%A{result}"
-            result
-        | _ -> failwith "Type checking failed"
-        
-    // [<Benchmark>]
-    member _.GetAutocompleteList() =
-        let file, contents = sourceFiles |> List.find (fun (file, _) -> file.EndsWith "AsyncResult.fs")
-        let parseResults, typeCheckAnswer = checker.ParseAndCheckFileInProject(file, 0, contents, projectOptions) |> Async.RunSynchronously        
-        match typeCheckAnswer with
-        | FSharpCheckFileAnswer.Succeeded checkFileResults ->
-            let result = checkFileResults.GetDeclarationListInfo(Some parseResults, 9, "    let inline retn (value: 'ok) : Async<Result<'ok, 'error>> = Ok value |> Async.", PartialLongName.Empty 82, (fun () -> []))
-            // Doesn't work, dunno why...
-            result
-        | _ -> failwith "Type checking failed"
 
 
 [<EntryPoint>]
