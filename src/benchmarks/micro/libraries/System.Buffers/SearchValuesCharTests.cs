@@ -4,7 +4,6 @@
 
 using BenchmarkDotNet.Attributes;
 using MicroBenchmarks;
-using System.Runtime.CompilerServices;
 
 namespace System.Buffers.Tests
 {
@@ -14,29 +13,16 @@ namespace System.Buffers.Tests
         [Params(32, 64, 128, 256, 1_000, 10_000)]
         public int Length;
 
-        private SearchValues<char> _searchValues;
+        private static readonly SearchValues<char> s_searchValues = SearchValues.Create("ßäöüÄÖÜ");
         private char[] _text;
-
-        [Params(
-            //"abcdefABCDEF0123456789",   // ASCII
-            "abcdefABCDEF0123456789Ü"  // Mixed ASCII and non-ASCII
-            //"ßäöüÄÖÜ"                   // Non-ASCII only
-            )]
-        public string Values;
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private char CharNotInSet() => '\n';
 
         [GlobalSetup]
         public void Setup()
         {
-            _searchValues = SearchValues.Create(Values);
-
-            _text = new string(CharNotInSet(), Length).ToCharArray();
-            _text[0] = char.MaxValue;
+            _text = new string('\n', Length).ToCharArray();
         }
 
         [Benchmark]
-        public int IndexOfAny() => _text.AsSpan().IndexOfAny(_searchValues);
+        public int IndexOfAny() => _text.AsSpan().IndexOfAny(s_searchValues);
     }
 }
