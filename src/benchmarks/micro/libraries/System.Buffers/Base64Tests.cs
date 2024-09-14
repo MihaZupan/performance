@@ -8,6 +8,18 @@ using MicroBenchmarks;
 
 namespace System.Buffers.Text.Tests
 {
+#if NET9_0_OR_GREATER
+    [BenchmarkCategory(Categories.Libraries)]
+    public class Base64UrlTests
+    {
+        private static readonly byte[] s_bytes = new byte[10_000];
+        private static readonly string s_chars = new('a', 10_000);
+
+        [Benchmark]
+        public int DecodeFromChars() => Base64Url.DecodeFromChars(s_chars, s_bytes);
+    }
+#endif
+
     [BenchmarkCategory(Categories.Libraries)]
     public class Base64Tests
     {
