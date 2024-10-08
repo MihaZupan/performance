@@ -84,20 +84,20 @@ namespace System.Globalization.Tests
                 throw new Exception(nameof(_diffAtLastChar));
         }
 
-        [Benchmark]
-        public bool IsPrefix_FirstHalf() => Options.CultureInfo.CompareInfo.IsPrefix(_value, _firstHalf, Options.CompareOptions);
+        //[Benchmark]
+        //public bool IsPrefix_FirstHalf() => Options.CultureInfo.CompareInfo.IsPrefix(_value, _firstHalf, Options.CompareOptions);
 
-        [Benchmark] // this should return quickly
-        [MemoryRandomization]
-        public bool IsPrefix_DifferentFirstChar() => Options.CultureInfo.CompareInfo.IsPrefix(_value, _diffAtFirstChar, Options.CompareOptions);
+        //[Benchmark] // this should return quickly
+        //[MemoryRandomization]
+        //public bool IsPrefix_DifferentFirstChar() => Options.CultureInfo.CompareInfo.IsPrefix(_value, _diffAtFirstChar, Options.CompareOptions);
 
-        [Benchmark]
-        [MemoryRandomization]
-        public bool IsSuffix_SecondHalf() => Options.CultureInfo.CompareInfo.IsSuffix(_value, _secondHalf, Options.CompareOptions);
+        //[Benchmark]
+        //[MemoryRandomization]
+        //public bool IsSuffix_SecondHalf() => Options.CultureInfo.CompareInfo.IsSuffix(_value, _secondHalf, Options.CompareOptions);
 
-        [Benchmark] // this should return quickly
-        [MemoryRandomization]
-        public bool IsSuffix_DifferentLastChar() => Options.CultureInfo.CompareInfo.IsSuffix(_value, _diffAtLastChar, Options.CompareOptions);
+        //[Benchmark] // this should return quickly
+        //[MemoryRandomization]
+        //public bool IsSuffix_DifferentLastChar() => Options.CultureInfo.CompareInfo.IsSuffix(_value, _diffAtLastChar, Options.CompareOptions);
 
         [Benchmark]
         [MemoryRandomization]
