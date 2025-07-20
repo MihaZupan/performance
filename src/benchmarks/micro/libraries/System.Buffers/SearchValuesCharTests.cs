@@ -4,6 +4,7 @@
 
 using BenchmarkDotNet.Attributes;
 using MicroBenchmarks;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace System.Buffers.Tests
@@ -60,4 +61,30 @@ namespace System.Buffers.Tests
         [Benchmark]
         public int LastIndexOfAnyExcept() => _textExcept.AsSpan().LastIndexOfAnyExcept(_searchValues);
     }
+
+#if NET9_0_OR_GREATER
+    [BenchmarkCategory(Categories.Runtime, Categories.Libraries, Categories.Span)]
+    public class SearchValuesStringTests_SingleString
+    {
+        private static readonly SearchValues<string> s_values = SearchValues.Create([Needle], StringComparison.Ordinal);
+        private static readonly SearchValues<string> s_valuesIC = SearchValues.Create([Needle], StringComparison.OrdinalIgnoreCase);
+        private static readonly string s_text_noMatches = new('a', Length);
+        private static readonly string s_text_falsePositives = string.Concat(Enumerable.Repeat("Sherlock Holm_s", Length / Needle.Length));
+        private static readonly string s_text_earlyMatch = $"{Needle}{new string('a', 100)}";
+
+        public const int Length = 100_000;
+        public const string Needle = "Sherlock Holmes";
+
+        [Benchmark] public void Throughput() => s_text_noMatches.AsSpan().Contains(Needle, StringComparison.Ordinal);
+        [Benchmark] public void SV_Throughput() => s_text_noMatches.AsSpan().ContainsAny(s_values);
+        [Benchmark] public void SV_ThroughputIC() => s_text_noMatches.AsSpan().ContainsAny(s_valuesIC);
+
+        [Benchmark] public void FalsePositives() => s_text_falsePositives.AsSpan().Contains(Needle, StringComparison.Ordinal);
+        [Benchmark] public void SV_FalsePositives() => s_text_falsePositives.AsSpan().ContainsAny(s_values);
+        [Benchmark] public void SV_FalsePositivesIC() => s_text_falsePositives.AsSpan().ContainsAny(s_valuesIC);
+
+        [Benchmark] public void SV_EarlyMatch() => s_text_earlyMatch.AsSpan().ContainsAny(s_values);
+        [Benchmark] public void SV_EarlyMatchIC() => s_text_earlyMatch.AsSpan().ContainsAny(s_valuesIC);
+    }
+#endif
 }
