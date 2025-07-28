@@ -64,6 +64,19 @@ namespace System.Buffers.Tests
 
 #if NET9_0_OR_GREATER
     [BenchmarkCategory(Categories.Runtime, Categories.Libraries, Categories.Span)]
+    public class SearchValuesStringTests_Teddy
+    {
+        private static readonly SearchValues<string> s_values = SearchValues.Create(["Sherlock", "Holmes"], StringComparison.Ordinal);
+        private static readonly SearchValues<string> s_valuesIC = SearchValues.Create(["Sherlock", "Holmes"], StringComparison.OrdinalIgnoreCase);
+        private static readonly string s_text_noMatches = new('a', Length);
+
+        public const int Length = 100_000;
+
+        [Benchmark] public bool SV_Throughput() => s_text_noMatches.AsSpan().ContainsAny(s_values);
+        [Benchmark] public bool SV_ThroughputIC() => s_text_noMatches.AsSpan().ContainsAny(s_valuesIC);
+    }
+
+    [BenchmarkCategory(Categories.Runtime, Categories.Libraries, Categories.Span)]
     public class SearchValuesStringTests_SingleString
     {
         private static readonly SearchValues<string> s_values = SearchValues.Create([Needle], StringComparison.Ordinal);
