@@ -30,6 +30,7 @@ namespace System.IO.Compression
         public override Stream CreateStream(Stream stream, CompressionLevel level) => new ZLibStream(stream, level);
     }
 
+    [BenchmarkCategory(Categories.Libraries, Categories.NoWASM)]
     public class ZLibBench
     {
         private Barrier _barrier = new Barrier(Environment.ProcessorCount - 1);
