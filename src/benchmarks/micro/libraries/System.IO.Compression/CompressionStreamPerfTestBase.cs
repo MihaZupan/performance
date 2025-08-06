@@ -2,9 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using MicroBenchmarks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.IO.Compression
 {
@@ -25,6 +28,35 @@ namespace System.IO.Compression
     {
         public override Stream CreateStream(Stream stream, CompressionMode mode) => new ZLibStream(stream, mode);
         public override Stream CreateStream(Stream stream, CompressionLevel level) => new ZLibStream(stream, level);
+    }
+
+    public class ZLibBench
+    {
+        private Barrier _barrier = new Barrier(Environment.ProcessorCount - 1);
+
+        [Benchmark]
+        public void Test()
+        {
+            Task.WaitAll(Enumerable
+                .Range(0, _barrier.ParticipantCount)
+                .Select(_ => Task.Run(() =>
+                {
+                    _barrier.SignalAndWait();
+                    for (int length = 1; length < 1000; length++)
+                    {
+
+                        byte[] buffer = new byte[length];
+                        Random.Shared.NextBytes(buffer);
+                        using (var z = new ZLibStream(new MemoryStream(), CompressionMode.Compress))
+                        {
+                            for (int i = 0; i < 100; i++)
+                            {
+                                z.Write(buffer);
+                            }
+                        }
+                    }
+                })).ToArray());
+        }
     }
 #endif
 
