@@ -24,7 +24,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -32,7 +32,6 @@ jobs:
         projectFileName: scenarios.proj
         channels: # for public jobs we want to make sure that the PRs don't break any of the supported frameworks
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -44,7 +43,7 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
         buildMachines:
-          #- win-x64
+          - win-x64
           - ubuntu-x64
         isPublic: true
         jobParameters:
@@ -52,7 +51,6 @@ jobs:
           projectFileName: maui_scenarios.proj
           channels: # for public jobs we want to make sure that the PRs don't break any of the supported frameworks
             - main
-            - 10.0
             - 9.0
             - 8.0
           ${{ each parameter in parameters.jobParameters }}:
@@ -63,7 +61,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -71,7 +69,6 @@ jobs:
         projectFileName: blazor_scenarios.proj
         channels: # for public jobs we want to make sure that the PRs don't break any of the supported frameworks
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -82,7 +79,6 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
         #- win-x86
         #- ubuntu-x64-1804 reenable under new machine on new ubuntu once lttng/events are available
       isPublic: true
@@ -91,7 +87,6 @@ jobs:
         projectFileName: sdk_scenarios.proj
         channels: # for public jobs we want to make sure that the PRs don't break any of the supported frameworks
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -102,8 +97,8 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        #- win-x86
+        - win-x64
+        - win-x86
       isPublic: true
       jobParameters:
         runKind: micro
@@ -111,7 +106,6 @@ jobs:
         runCategories: 'runtime libraries' 
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
 
@@ -130,7 +124,6 @@ jobs:
           - main
           # - nativeaot9.0 # Disable until I have time to properly fix the issues and can merge https://github.com/dotnet/performance/pull/4741
           # - nativeaot8.0
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -141,7 +134,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -150,7 +143,6 @@ jobs:
         runCategories: 'mldotnet' 
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -162,7 +154,7 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-performance-job.yml
         buildMachines:
-          #- win-x64
+          - win-x64
           - ubuntu-x64
         isPublic: true
         jobParameters:
@@ -171,7 +163,6 @@ jobs:
           runCategories: 'fsharp'
           channels:
             - main
-            - 10.0
             - 9.0
             - 8.0
           ${{ each parameter in parameters.jobParameters }}:
@@ -181,7 +172,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -190,7 +181,6 @@ jobs:
         runCategories: 'FSharpMicro'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -201,7 +191,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -210,7 +200,6 @@ jobs:
         runCategories: 'BepuPhysics'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -221,7 +210,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -230,7 +219,6 @@ jobs:
         runCategories: 'ImageSharp'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -241,7 +229,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -250,7 +238,6 @@ jobs:
         runCategories: 'AkadeIndexedSet'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -261,7 +248,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -270,7 +257,6 @@ jobs:
         runCategories: 'roslyn'
         channels: # for Roslyn jobs we want to check .NET Core 3.1 and 5.0 only
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -283,7 +269,7 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-performance-job.yml
         buildMachines:
-          #- win-x64
+          - win-x64
           - ubuntu-x64
         isPublic: true
         jobParameters:
@@ -292,7 +278,6 @@ jobs:
           runCategories: 'illink'
           channels: # for Roslyn jobs we want to check .NET Core 3.1 and 5.0 only
             - main
-            - 10.0
             - 9.0
             - 8.0
           ${{ each parameter in parameters.jobParameters }}:
@@ -303,7 +288,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -311,7 +296,6 @@ jobs:
         projectFileName: nativeaot_scenarios.proj
         channels: # for public jobs we want to make sure that the PRs don't break any of the supported frameworks
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -322,7 +306,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
+        - win-x64
         - ubuntu-x64
       isPublic: true
       jobParameters:
@@ -331,7 +315,6 @@ jobs:
         runCategories: 'Public'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -348,11 +331,9 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
@@ -360,7 +341,6 @@ jobs:
         projectFileName: scenarios.proj
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -371,9 +351,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
         - win-x64-viper
-        - win-arm64
         - win-arm64-ampere
       isPublic: false
       jobParameters:
@@ -381,7 +359,6 @@ jobs:
         projectFileName: scenarios_affinitized.proj
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         additionalJobIdentifier: 'Affinity_85'
@@ -393,7 +370,7 @@ jobs:
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui Android scenario benchmarks (Mono ProfiledAOT)
+  # Maui Android scenario benchmarks (Mono Default) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -407,31 +384,13 @@ jobs:
         channels:
           - main
         runtimeFlavor: mono
-        codeGenType: ProfiledAOT
+        codeGenType: Default
+        buildConfig: Release
         additionalJobIdentifier: Mono
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui Android scenario benchmarks (Mono AOT)
-  - template: /eng/pipelines/templates/build-machine-matrix.yml
-    parameters:
-      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
-      buildMachines:
-        - win-x64-android-arm64-pixel
-        - win-x64-android-arm64-galaxy
-      isPublic: false
-      jobParameters:
-        runKind: maui_scenarios_android
-        projectFileName: maui_scenarios_android.proj
-        channels:
-          - main
-        runtimeFlavor: mono
-        codeGenType: AOT
-        additionalJobIdentifier: Mono
-        ${{ each parameter in parameters.jobParameters }}:
-          ${{ parameter.key }}: ${{ parameter.value }}
-
-  # Maui Android scenario benchmarks (CoreCLR JIT)
+  # Maui Android scenario benchmarks (CoreCLR Default) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -445,50 +404,13 @@ jobs:
         channels:
           - main
         runtimeFlavor: coreclr
-        codeGenType: JIT
+        codeGenType: Default
+        buildConfig: Release
         additionalJobIdentifier: CoreCLR
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui Android scenario benchmarks (CoreCLR R2R)
-  - template: /eng/pipelines/templates/build-machine-matrix.yml
-    parameters:
-      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
-      buildMachines:
-        - win-x64-android-arm64-pixel
-        - win-x64-android-arm64-galaxy
-      isPublic: false
-      jobParameters:
-        runKind: maui_scenarios_android
-        projectFileName: maui_scenarios_android.proj
-        channels:
-          - main
-        runtimeFlavor: coreclr
-        codeGenType: R2R
-        additionalJobIdentifier: CoreCLR
-        ${{ each parameter in parameters.jobParameters }}:
-          ${{ parameter.key }}: ${{ parameter.value }}
-
-  # Maui Android scenario benchmarks (CoreCLR R2R Composite)
-  - template: /eng/pipelines/templates/build-machine-matrix.yml
-    parameters:
-      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
-      buildMachines:
-        - win-x64-android-arm64-pixel
-        - win-x64-android-arm64-galaxy
-      isPublic: false
-      jobParameters:
-        runKind: maui_scenarios_android
-        projectFileName: maui_scenarios_android.proj
-        channels:
-          - main
-        runtimeFlavor: coreclr
-        codeGenType: R2RComposite
-        additionalJobIdentifier: CoreCLR
-        ${{ each parameter in parameters.jobParameters }}:
-          ${{ parameter.key }}: ${{ parameter.value }}
-
-  # Maui Android scenario benchmarks (CoreCLR NativeAOT)
+  # Maui Android scenario benchmarks (CoreCLR NativeAOT) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -503,11 +425,12 @@ jobs:
           - main
         runtimeFlavor: coreclr
         codeGenType: NativeAOT
+        buildConfig: Release
         additionalJobIdentifier: CoreCLR
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui iOS Mono scenario benchmarks
+  # Maui iOS scenario benchmarks (Mono Default) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -520,12 +443,13 @@ jobs:
         channels:
           - main
         runtimeFlavor: mono
-        codeGenType: FullAOT
+        codeGenType: Default
+        buildConfig: Release
         additionalJobIdentifier: Mono
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui iOS CoreCLR scenario benchmarks
+  # Maui iOS scenario benchmarks (CoreCLR Default) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -538,12 +462,13 @@ jobs:
         channels:
           - main
         runtimeFlavor: coreclr
-        codeGenType: Interpreter
+        codeGenType: Default
+        buildConfig: Release
         additionalJobIdentifier: CoreCLR
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
-  # Maui iOS Native AOT scenario benchmarks
+  # Maui iOS scenario benchmarks (CoreCLR NativeAOT) - Release
   - template: /eng/pipelines/templates/build-machine-matrix.yml
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
@@ -557,7 +482,86 @@ jobs:
           - main
         runtimeFlavor: coreclr
         codeGenType: NativeAOT
+        buildConfig: Release
         additionalJobIdentifier: CoreCLR
+        ${{ each parameter in parameters.jobParameters }}:
+          ${{ parameter.key }}: ${{ parameter.value }}
+
+  # Maui Android scenario benchmarks (Mono - Default) - Debug
+  - template: /eng/pipelines/templates/build-machine-matrix.yml
+    parameters:
+      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
+      buildMachines:
+        - win-x64-android-arm64-pixel
+        - win-x64-android-arm64-galaxy
+      isPublic: false
+      jobParameters:
+        runKind: maui_scenarios_android
+        projectFileName: maui_scenarios_android.proj
+        channels:
+          - main
+        runtimeFlavor: mono
+        codeGenType: Default
+        buildConfig: Debug
+        additionalJobIdentifier: Mono_Debug
+        ${{ each parameter in parameters.jobParameters }}:
+          ${{ parameter.key }}: ${{ parameter.value }}
+
+  # Maui Android scenario benchmarks (CoreCLR - Default) - Debug
+  - template: /eng/pipelines/templates/build-machine-matrix.yml
+    parameters:
+      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
+      buildMachines:
+        - win-x64-android-arm64-pixel
+        - win-x64-android-arm64-galaxy
+      isPublic: false
+      jobParameters:
+        runKind: maui_scenarios_android
+        projectFileName: maui_scenarios_android.proj
+        channels:
+          - main
+        runtimeFlavor: coreclr
+        codeGenType: Default
+        buildConfig: Debug
+        additionalJobIdentifier: CoreCLR_Debug
+        ${{ each parameter in parameters.jobParameters }}:
+          ${{ parameter.key }}: ${{ parameter.value }}
+
+  # Maui iOS scenario benchmarks (Mono - Default) - Debug
+  - template: /eng/pipelines/templates/build-machine-matrix.yml
+    parameters:
+      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
+      buildMachines:
+        - osx-x64-ios-arm64
+      isPublic: false
+      jobParameters:
+        runKind: maui_scenarios_ios
+        projectFileName: maui_scenarios_ios.proj
+        channels:
+          - main
+        runtimeFlavor: mono
+        codeGenType: Default
+        buildConfig: Debug
+        additionalJobIdentifier: Mono_Debug
+        ${{ each parameter in parameters.jobParameters }}:
+          ${{ parameter.key }}: ${{ parameter.value }}
+    
+  # Maui iOS scenario benchmarks (CoreCLR - Default) - Debug
+  - template: /eng/pipelines/templates/build-machine-matrix.yml
+    parameters:
+      jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
+      buildMachines:
+        - osx-x64-ios-arm64
+      isPublic: false
+      jobParameters:
+        runKind: maui_scenarios_ios
+        projectFileName: maui_scenarios_ios.proj
+        channels:
+          - main
+        runtimeFlavor: coreclr
+        codeGenType: Default
+        buildConfig: Debug
+        additionalJobIdentifier: CoreCLR_Debug
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
 
@@ -567,11 +571,9 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
         buildMachines:
-          #- win-x64
-          - ubuntu-x64
           - win-x64-viper
           - ubuntu-x64-viper
-          - win-arm64
+          - win-arm64-ampere
           - ubuntu-arm64-ampere
         isPublic: false
         jobParameters:
@@ -579,7 +581,6 @@ jobs:
           projectFileName: maui_scenarios.proj
           channels:
             - main
-            - 10.0
             - 9.0
             - 8.0
           ${{ each parameter in parameters.jobParameters }}:
@@ -590,18 +591,15 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
       isPublic: false
       jobParameters:
         runKind: nativeaot_scenarios
         projectFileName: nativeaot_scenarios.proj
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -619,9 +617,7 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
         - win-x64-viper
-        #- win-x86
         - win-x86-viper
         #- ubuntu-x64-1804 reenable under new machine on new ubuntu once lttng/events are available
       isPublic: false
@@ -630,7 +626,6 @@ jobs:
         projectFileName: sdk_scenarios.proj
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -641,7 +636,6 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-scenarios-job.yml
       buildMachines:
-        #- win-x64
         - win-x64-viper
       isPublic: false
       jobParameters:
@@ -649,7 +643,6 @@ jobs:
         projectFileName: blazor_scenarios.proj
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -661,11 +654,9 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-performance-job.yml
         buildMachines:
-          #- win-x64
-          - ubuntu-x64
           - win-x64-viper
           - ubuntu-x64-viper
-          - win-arm64
+          - win-arm64-ampere
           - ubuntu-arm64-ampere
         isPublic: false
         jobParameters:
@@ -674,7 +665,6 @@ jobs:
           runCategories: 'fsharp'
           channels:
             - main
-            - 10.0
             - 9.0
             - 8.0
           ${{ each parameter in parameters.jobParameters }}:
@@ -684,11 +674,9 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
@@ -697,7 +685,6 @@ jobs:
         runCategories: 'FSharpMicro'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -708,11 +695,9 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
@@ -721,7 +706,6 @@ jobs:
         runCategories: 'BepuPhysics'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -732,11 +716,9 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
@@ -745,7 +727,6 @@ jobs:
         runCategories: 'ImageSharp'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:
@@ -756,11 +737,9 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
+        - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
@@ -769,7 +748,6 @@ jobs:
         runCategories: 'AkadeIndexedSet'
         channels:
           - main
-          - 10.0
           - 9.0
         ${{ each parameter in parameters.jobParameters }}:
           ${{ parameter.key }}: ${{ parameter.value }}
@@ -779,11 +757,8 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
         - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
@@ -793,7 +768,6 @@ jobs:
         runCategories: 'mldotnet'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         affinity: '85' # (01010101) Enables alternating process threads to take hyperthreading into account
@@ -809,11 +783,8 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
         - win-arm64-ampere
         - ubuntu-arm64-ampere
       isPublic: false
@@ -823,7 +794,6 @@ jobs:
         runCategories: 'roslyn'
         channels: # for Roslyn jobs we want to check .NET Core 3.1 and 5.0 only
           - main
-          - 10.0
           - 9.0
           - 8.0
         affinity: '85' # (01010101) Enables alternating process threads to take hyperthreading into account
@@ -841,8 +811,6 @@ jobs:
       parameters:
         jobTemplate: /eng/pipelines/templates/run-performance-job.yml
         buildMachines:
-          #- win-x64
-          - ubuntu-x64
           - win-x64-viper
           - ubuntu-x64-viper
           # Illink.Utilities is not supported on ARM: The type initializer for 'ILLinkBenchmarks.Utilities' threw a NotSupportedException (Unsupported architecture). (06/2023)
@@ -853,7 +821,6 @@ jobs:
           runCategories: 'illink'
           channels: # for Roslyn jobs we want to check .NET Core 3.1 and 5.0 only
             - main
-            - 10.0
             - 9.0
             - 8.0
 
@@ -862,12 +829,10 @@ jobs:
     parameters:
       jobTemplate: /eng/pipelines/templates/run-performance-job.yml
       buildMachines:
-        #- win-x64
-        - ubuntu-x64
         - win-x64-viper
         - ubuntu-x64-viper
-        - win-arm64
-        - ubuntu-arm64
+        - win-arm64-ampere
+        - ubuntu-arm64-ampere
       isPublic: false
       jobParameters:
         runKind: powershell
@@ -875,7 +840,6 @@ jobs:
         runCategories: 'Public Internal'
         channels:
           - main
-          - 10.0
           - 9.0
           - 8.0
         ${{ each parameter in parameters.jobParameters }}:

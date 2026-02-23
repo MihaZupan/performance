@@ -12,6 +12,8 @@ from shared.versionmanager import versions_write_json, get_sdk_versions
 from test import EXENAME
 
 setup_loggers(True)
+logger = getLogger(__name__)
+logger.info(f"Starting pre-command for MAUI Sample Content iOS template app (dotnet new maui --sample-content)")
 
 precommands = PreCommands()
 
@@ -26,10 +28,11 @@ with MauiNuGetConfigContext(precommands.framework):
                     bin_dir=const.BINDIR,
                     exename=EXENAME,
                     working_directory=sys.path[0],
-                    no_restore=False)
+                    no_restore=False,
+                    extra_args=['--sample-content'])
     
     # Build the IPA - will use merged NuGet.config
-    precommands.execute(['/p:EnableCodeSigning=false', '/p:ApplicationId=net.dot.mauitesting'])
+    precommands.execute(['/p:EnableCodeSigning=false', '/p:ApplicationId=net.dot.mauisamplecontenttesting'])
     # NuGet.config is automatically restored after this block
 
 # Remove the aab files as we don't need them, this saves space
@@ -39,6 +42,6 @@ if precommands.output:
 remove_aab_files(output_dir)
 
 # Extract the versions of used SDKs from the linked folder DLLs
-version_dict = get_sdk_versions(rf"./{const.APPDIR}/obj/{precommands.configuration}/{precommands.framework}/ios-arm64/linked", False)
+version_dict = get_sdk_versions(rf"./{const.APPDIR}/obj/Release/{precommands.framework}/ios-arm64/linked", False)
 versions_write_json(version_dict, rf"{output_dir}/versions.json")
-print(f"Versions: {version_dict} from location " + rf"./{const.APPDIR}/obj/{precommands.configuration}/{precommands.framework}/ios-arm64/linked")
+print(f"Versions: {version_dict} from location " + rf"./{const.APPDIR}/obj/Release/{precommands.framework}/ios-arm64/linked")

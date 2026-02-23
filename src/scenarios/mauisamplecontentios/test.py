@@ -1,15 +1,14 @@
 '''
-Mobile .NET iOS Default App
+Mobile Maui App
 '''
-import os
 from shared.const import PUBDIR
 from shared.runner import TestTraits, Runner
 from shared.versionmanager import versions_read_json_file_save_env
 
-EXENAME = 'NetiOSDefault'
+EXENAME = 'MauiSampleContentiOSDefault'
 
 if __name__ == "__main__":    
-    versions_read_json_file_save_env(os.path.join(".", PUBDIR, "versions.json"))
+    versions_read_json_file_save_env(rf"./{PUBDIR}/versions.json")
 
     traits = TestTraits(exename=EXENAME, 
                         guiapp='false',
