@@ -114,4 +114,26 @@ public class StringDictionaryHashingCorpus
         return dictionary;
     }
 }
+
+[BenchmarkCategory(Categories.Libraries, Categories.Collections, Categories.GenericCollections)]
+public class StringDictionaryHashingCrossover
+{
+    private StringDictionaryHashing _workload = null!;
+
+    [Params(48, 64, 96, 120, 121, 128, 160, 192, 255, 256, 257, 512, 1000)]
+    public int Length { get; set; }
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _workload = new StringDictionaryHashing { Length = Length };
+        _workload.Setup();
+    }
+
+    [Benchmark(OperationsPerInvoke = 512)]
+    public int LookupAndUpdate() => _workload.LookupAndUpdate();
+
+    [Benchmark(OperationsPerInvoke = 256)]
+    public int Missing() => _workload.Missing();
+}
 #endif
